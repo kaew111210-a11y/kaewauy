@@ -3,6 +3,8 @@ USE kannganngan;
 CREATE TABLE IF NOT EXISTS accounts (
   id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   display_name VARCHAR(50) NOT NULL UNIQUE,
+  username VARCHAR(50) NOT NULL UNIQUE,
+  password_hash CHAR(64) NOT NULL,
   progress TINYINT UNSIGNED NOT NULL DEFAULT 0,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -30,4 +32,6 @@ CREATE TABLE IF NOT EXISTS task_history (
   INDEX(created_at),
   CONSTRAINT fk_history_account FOREIGN KEY (account_id) REFERENCES accounts(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-INSERT INTO accounts (display_name) VALUES ('แก้ว'),('อุ้ย') ON DUPLICATE KEY UPDATE display_name=VALUES(display_name);
+INSERT INTO accounts (display_name,username,password_hash) VALUES
+ ('แก้ว','kaew',SHA2('kaew',256)),('อุ้ย','auy',SHA2('auy',256))
+ON DUPLICATE KEY UPDATE display_name=VALUES(display_name), password_hash=VALUES(password_hash);
